@@ -95,11 +95,6 @@ int main(int argc, char **argv)
             break;
         case ButtonPress:
             /* Mouse button was pressed. */
-            //            XDrawImageString(myevent.xbutton.display,
-            //                             myevent.xbutton.window,
-            //                             mygc,
-            //                             myevent.xbutton.x, myevent.xbutton.y,
-            //                             hi, strlen(hi));
 
             XDrawString(myevent.xbutton.display,
                         myevent.xbutton.window,
