@@ -11,4 +11,9 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/include/util"
 )
 
-add_executable(${PROJECT_NAME} "src/main.c")
+add_executable(${PROJECT_NAME}
+    "src/main.c"
+    "src/util/font.c"
+    "src/util/ui.c"
+    "src/util/x.c"
+    )

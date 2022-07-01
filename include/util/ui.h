@@ -1,10 +1,9 @@
-#ifndef _penulis_lib_h_
-#define _penulis_lib_h_
+#ifndef _penulis_ui_h_
+#define _penulis_ui_h_
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>

@@ -1,5 +1,18 @@
 #include <main.h>
 
+void scaleDrawable(Display *dis, Window win, GC gc, int x, int y){
+    XWindowAttributes attr;
+    Status s = XGetWindowAttributes(dis, win, &attr);
+    Pixmap pm = XCreatePixmap(dis, win, attr.width, attr.height, attr.depth);
+    for(int i=0; i<attr.height/y; i++){
+        for(int j=0; j<attr.width/x; j++){
+            XCopyArea(dis, win, pm, gc, j, i, x, y, j*x, i*y);
+        }
+    }
+    XCopyArea(dis, pm, win, gc, 0, 0, attr.width, attr.height, 0, 0);
+    XFreePixmap(dis, pm);
+}
+
 int main(int argc, char **argv)
 {
     char hello[] = "Hello World!";
@@ -21,34 +34,28 @@ int main(int argc, char **argv)
     char text[10];
     int done;
 
-    /* setup display/screen */
-    mydisplay = XOpenDisplay("");
+    xInit(argc, argv);
 
-    myscreen = DefaultScreen(mydisplay);
+    /* setup display/screen */
+    //    mydisplay = XOpenDisplay("");
+    mydisplay = displayIns;
+
+    //    myscreen = DefaultScreen(mydisplay);
+    myscreen = screenIns;
 
     /* drawing contexts for an window */
-    myforeground = BlackPixel(mydisplay, myscreen);
-    mybackground = WhitePixel(mydisplay, myscreen);
-    myhint.x = 200;
-    myhint.y = 300;
+    //    myforeground = BlackPixel(mydisplay, myscreen);
+    //    mybackground = WhitePixel(mydisplay, myscreen);
+    mybackground = BlackPixel(mydisplay, myscreen);
+    myforeground = WhitePixel(mydisplay, myscreen);
+    myhint.x = 10;
+    myhint.y = 10;
     myhint.width = 350;
     myhint.height = 250;
     myhint.flags = PPosition|PSize;
 
-    /* create window */
-    mywindow = XCreateSimpleWindow(mydisplay, DefaultRootWindow(mydisplay),
-                                   myhint.x, myhint.y,
-                                   myhint.width, myhint.height,
-                                   5, myforeground, mybackground);
-
-    /* window manager properties (yes, use of StdProp is obsolete) */
-    XSetStandardProperties(mydisplay, mywindow, hello, hello,
-                           None, argv, argc, &myhint);
-
-    /* graphics context */
-    mygc = XCreateGC(mydisplay, mywindow, 0, 0);
-    XSetBackground(mydisplay, mygc, mybackground);
-    XSetForeground(mydisplay, mygc, myforeground);
+    mywindow = windowIns;
+    mygc = gcIns;
 
     /* allow receiving mouse events */
     XSelectInput(mydisplay,mywindow,
@@ -57,8 +64,11 @@ int main(int argc, char **argv)
     /* show up window */
     XMapRaised(mydisplay, mywindow);
 
+    // avoid error when click window close button
     Atom WM_DELETE_WINDOW = XInternAtom(mydisplay, "WM_DELETE_WINDOW", True);
     XSetWMProtocols(mydisplay, mywindow, &WM_DELETE_WINDOW, 1);
+
+    fontInit();
 
     /* event loop */
     done = 0;
@@ -71,12 +81,13 @@ int main(int argc, char **argv)
 
         case Expose:
             /* Window was showed. */
-            if(myevent.xexpose.count==0)
+            if(myevent.xexpose.count==0){
                 XDrawImageString(myevent.xexpose.display,
                                  myevent.xexpose.window,
                                  mygc,
-                                 50, 50,
+                                 200, 200,
                                  hello, strlen(hello));
+            }
             break;
         case MappingNotify:
             /* Modifier key was up/down. */
@@ -84,16 +95,27 @@ int main(int argc, char **argv)
             break;
         case ButtonPress:
             /* Mouse button was pressed. */
-            XDrawImageString(myevent.xbutton.display,
-                             myevent.xbutton.window,
-                             mygc,
-                             myevent.xbutton.x, myevent.xbutton.y,
-                             hi, strlen(hi));
+            //            XDrawImageString(myevent.xbutton.display,
+            //                             myevent.xbutton.window,
+            //                             mygc,
+            //                             myevent.xbutton.x, myevent.xbutton.y,
+            //                             hi, strlen(hi));
+
+            XDrawString(myevent.xbutton.display,
+                        myevent.xbutton.window,
+                        mygc,
+                        myevent.xbutton.x, myevent.xbutton.y,
+                        hi, strlen(hi));
             break;
         case KeyPress:
             /* Key input. */
             i = XLookupString(&myevent, text, 10, &mykey, 0);
             if(i==1 && text[0]=='q') done = 1;
+            else if(i == 1 && text[0]=='c'){
+
+            }else if(i == 1 && text[0]=='s'){
+                scaleDrawable(mydisplay, mywindow, mygc, 2, 2);
+            }
             break;
         case ClientMessage:
             done = 1;
@@ -101,10 +123,8 @@ int main(int argc, char **argv)
         }  // switch
     }  // while
 
-    /* finalization */
-    XFreeGC(mydisplay,mygc);
-    XDestroyWindow(mydisplay, mywindow);
-    XCloseDisplay(mydisplay);
+    fontFree();
+    xFree();
 
     return 0;
 }
