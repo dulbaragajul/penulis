@@ -10,7 +10,7 @@ typedef struct {
     green,
     blue,
 
-    bg
+    bg;
 } Clr;
 
 extern Display *displayIns;

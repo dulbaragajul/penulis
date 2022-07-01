@@ -10,20 +10,24 @@ void xInit(int argc, char **argv){
     displayIns = XOpenDisplay("");
     screenIns = DefaultScreen(displayIns);
 
-    XSizeHints myhint;
-    myhint.x = 10;
-    myhint.y = 10;
-    myhint.width = 500;
-    myhint.height = 500;
-    myhint.flags = PPosition|PSize;
-
     xInitColor(displayIns, screenIns);
 
     unsigned long myforeground, mybackground;
     mybackground = clrIns.bg;
     myforeground = clrIns.white;
 
-    windowIns = XCreateSimpleWindow(displayIns, DefaultRootWindow(displayIns),
+    Window rootWin = DefaultRootWindow(displayIns);
+    XWindowAttributes attr;
+    XGetWindowAttributes(displayIns, rootWin, &attr);
+
+    XSizeHints myhint;
+    myhint.x = 0;
+    myhint.y = 0;
+    myhint.flags = PPosition|PSize;
+    myhint.width = attr.width;
+    myhint.height = attr.height;
+
+    windowIns = XCreateSimpleWindow(displayIns, rootWin,
                                     myhint.x, myhint.y,
                                     myhint.width, myhint.height,
                                     0, myforeground, mybackground);
@@ -34,8 +38,8 @@ void xInit(int argc, char **argv){
 
     gcIns = XCreateGC(displayIns, windowIns, 0, 0);
 
-//    int depth = XDefaultDepth(displayIns, screenIns);
-//    printf("depth %d", depth);  // depth 24
+    //    int depth = XDefaultDepth(displayIns, screenIns);
+    //    printf("depth %d", depth);  // depth 24
 
     //    int ldCount;
     //    int *ld = XListDepths(displayIns, screenIns, &ldCount);  // 24, 1, 4, 8, 15, 16, 32

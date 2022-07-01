@@ -9,6 +9,7 @@ add_link_options(
 include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/util"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/component"
 )
 
 add_executable(${PROJECT_NAME}
@@ -16,4 +17,9 @@ add_executable(${PROJECT_NAME}
     "src/util/font.c"
     "src/util/ui.c"
     "src/util/x.c"
+    "src/util/file.c"
+    "src/util/project.c"
+    "src/util/list.c"
+    "src/component/subWin.c"
+    "src/component/textArea.c"
     )

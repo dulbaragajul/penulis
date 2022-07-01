@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     /* show up window */
     XMapRaised(mydisplay, mywindow);
 
-    // avoid error when click window close button
+    // solve error when click window close button
     Atom WM_DELETE_WINDOW = XInternAtom(mydisplay, "WM_DELETE_WINDOW", True);
     XSetWMProtocols(mydisplay, mywindow, &WM_DELETE_WINDOW, 1);
 
