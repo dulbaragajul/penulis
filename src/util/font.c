@@ -9,6 +9,7 @@ FontProvider fontProviderIns;
 //#define FONT_PATTERN_COURIER "*courier*"
 
 void fontInit(){
+    FontProvider *fp = &fontProviderIns;
 
     //    const int maxListFont = 10;
     //    int nameCount;
@@ -25,8 +26,8 @@ void fontInit(){
     XFontStruct *fontStruct = XLoadQueryFont(displayIns, fontName);
     if(fontStruct) {
         XSetFont(displayIns, gcIns, fontStruct->fid);
-        fontW = fontStruct->max_bounds.width;
-        fontH = fontStruct->max_bounds.ascent + fontStruct->max_bounds.descent;
+        fp->fontW = fontW = fontStruct->max_bounds.width;
+        fp->fontH = fontH = fontStruct->max_bounds.ascent + fontStruct->max_bounds.descent;
     }else{
         printf("font struct null");
     }
@@ -49,14 +50,23 @@ void fontInit(){
         for(int j=0; j<sheetCharMaxSize; j++){
             sprintf(str, "%c", c++);
             XDrawImageString(displayIns, fontProviderIns.charNormal,
-                             gcIns, j*fontW, fontH+i*fontH, str, strlen(str));
+                             gcIns, j*fontW, fontStruct->max_bounds.ascent +i*fontH, str, strlen(str));
         }
     }
 
-    XCopyArea(displayIns, fontProviderIns.charNormal,
-              windowIns, gcIns, 0, 0, attr.width, attr.height, 0, 0);
+//    XCopyArea(displayIns, fontProviderIns.charNormal,
+//              windowIns, gcIns, 0, 0, attr.width, attr.height, 0, 0);
 
     XFreeFont(displayIns, fontStruct);
+}
+void fontSet(uint8_t c, int x, int y){
+    FontProvider *fp = &fontProviderIns;
+    const uint8_t sheetCharMaxSize = 16;
+    XCopyArea(displayIns, fontProviderIns.charNormal,
+              windowIns, gcIns,
+              (c % sheetCharMaxSize) * fp->fontW,
+              (c / sheetCharMaxSize) * fp->fontH,
+              fp->fontW, fp->fontH, x, y);
 }
 void fontFree(){
     XFreePixmap(displayIns, fontProviderIns.charNormal);

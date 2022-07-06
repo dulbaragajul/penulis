@@ -1,4 +1,4 @@
-#include <main.h>
+#include "main.h"
 
 void scaleDrawable(Display *dis, Window win, GC gc, int x, int y){
     XWindowAttributes attr;
@@ -65,10 +65,16 @@ int main(int argc, char **argv)
     XMapRaised(mydisplay, mywindow);
 
     // solve error when click window close button
-    Atom WM_DELETE_WINDOW = XInternAtom(mydisplay, "WM_DELETE_WINDOW", True);
-    XSetWMProtocols(mydisplay, mywindow, &WM_DELETE_WINDOW, 1);
+    Atom wmDeleteWindow = XInternAtom(mydisplay, "WM_DELETE_WINDOW", True);
+    XSetWMProtocols(mydisplay, mywindow, &wmDeleteWindow, 1);
 
     fontInit();
+    inputInit();
+    inputTyping();
+
+    struct timespec ts;
+    ts.tv_sec  = 0;
+    ts.tv_nsec = 20000000L;  // 20ms
 
     /* event loop */
     done = 0;
@@ -104,18 +110,23 @@ int main(int argc, char **argv)
             break;
         case KeyPress:
             /* Key input. */
-            i = XLookupString(&myevent, text, 10, &mykey, 0);
-            if(i==1 && text[0]=='q') done = 1;
-            else if(i == 1 && text[0]=='c'){
+//            i = XLookupString(&myevent, text, 10, &mykey, 0);
+//            if(i==1 && text[0]=='q') done = 1;
+//            else if(i == 1 && text[0]=='c'){
 
-            }else if(i == 1 && text[0]=='s'){
-                scaleDrawable(mydisplay, mywindow, mygc, 2, 2);
-            }
+//            }else if(i == 1 && text[0]=='s'){
+//                scaleDrawable(mydisplay, mywindow, mygc, 2, 2);
+//            }
+            inputProcess(&myevent);
             break;
         case ClientMessage:
-            done = 1;
+            if (myevent.xclient.data.l[0] == wmDeleteWindow) done = 1;
+            //            done = 1;
             break;
         }  // switch
+
+        nanosleep(&ts, NULL);
+
     }  // while
 
     fontFree();

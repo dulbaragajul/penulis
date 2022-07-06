@@ -10,6 +10,7 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/util"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/component"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/input"
 )
 
 add_executable(${PROJECT_NAME}
@@ -20,6 +21,10 @@ add_executable(${PROJECT_NAME}
     "src/util/file.c"
     "src/util/project.c"
     "src/util/list.c"
+    "src/util/util.c"
     "src/component/subWin.c"
     "src/component/textArea.c"
+    "src/input/input.c"
+    "src/input/inputNormal.c"
+    "src/input/inputChar.c"
     )

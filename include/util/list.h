@@ -3,18 +3,18 @@
 
 #include <lib.h>
 
-typedef struct List_ List;
+struct List_;
 
 typedef struct Item_ {
     void *d;  // data
-    List *l;  // parent List
+    struct List_ *l;
     struct Item_ *p;  // prev
     struct Item_ *n;  // next
-} Item;  // Element
+} Item;  // Element of List
 
 typedef struct List_ {
     void *p;  // parent or holder, can be anything
-    unsigned int c;  // count
+    unsigned int s;  // size
     Item *f;  // first
     Item *l;  // last
 } List;
