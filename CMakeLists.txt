@@ -26,5 +26,6 @@ add_executable(${PROJECT_NAME}
     "src/component/textArea.c"
     "src/input/input.c"
     "src/input/inputNormal.c"
+    "src/input/inputShift.c"
     "src/input/inputChar.c"
     )

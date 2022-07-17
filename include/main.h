@@ -12,6 +12,7 @@
 #include "input.h"
 #include "util.h"
 #include "inputNormal.h"
+#include "inputShift.h"
 #include "inputChar.h"
 
 #endif

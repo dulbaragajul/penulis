@@ -1,9 +1,11 @@
 #ifndef _penulis_inputNormal_h_
 #define _penulis_inputNormal_h_
 
-#include "lib.h"
+#include "input.h"
 
 typedef struct {
+    void (*inp[MAX_KEY]) (XEvent*, uint8_t);
+
     void (*inp0)(uint8_t);
     void (*inp1)(uint8_t);
     void (*inp2)(uint8_t);
@@ -21,7 +23,7 @@ typedef struct {
 extern InpNormal inpNormalIns;
 
 void inputNormalNull(void);
-void inputNormalTyping();
+void inputNormalTyping(void);
 void inputNormalProcess(XEvent *ev);
 
 #endif

@@ -3,6 +3,6 @@
 
 #include "lib.h"
 
-void inputChar(uint8_t c);
+void inputChar(XEvent* ev, uint8_t c);
 
 #endif
