@@ -4,35 +4,60 @@ Key keyIns;
 
 void inputInit(){
     KeySym ks[] = {
-        // dummy
-        XK_0, XK_1, XK_2, XK_3, XK_4,
-        XK_5, XK_6, XK_7, XK_8, XK_9,
-        XK_0, XK_1, XK_2, XK_3, XK_4,
-        XK_5, XK_6, XK_7, XK_8, XK_9,
-        XK_0, XK_1, XK_2, XK_3, XK_4,
-        XK_5, XK_6, XK_7, XK_8, XK_9,
-        XK_0, XK_1, XK_2, XK_3, XK_4,
-        XK_5, XK_6, XK_7, XK_8, XK_9,
-        XK_0, XK_1, XK_2, XK_3, XK_4,
+        // 0
+        XK_Delete, XK_KP_Delete,
+
+        // 2
+        XK_Home, XK_End,
+        XK_Left, XK_Up, XK_Right, XK_Down,
+
+        // 8
+        XK_BackSpace,
+        XK_Tab,
+        XK_Return,
+
+        // 11, vertical tab (VT)
+        XK_Page_Up, XK_Page_Down,
+
+        // 13
+        XK_KP_Enter,
+        XK_Shift_L,
+        XK_Shift_R,
+
+        // 16, dummy
         XK_5,
 
-//    #define XK_space                         0x0020  /* U+0020 SPACE */
-//    #define XK_exclam                        0x0021  /* U+0021 EXCLAMATION MARK */
-//    #define XK_quotedbl                      0x0022  /* U+0022 QUOTATION MARK */
-//    #define XK_numbersign                    0x0023  /* U+0023 NUMBER SIGN */
-//    #define XK_dollar                        0x0024  /* U+0024 DOLLAR SIGN */
-//    #define XK_percent                       0x0025  /* U+0025 PERCENT SIGN */
-//    #define XK_ampersand                     0x0026  /* U+0026 AMPERSAND */
-//    #define XK_apostrophe                    0x0027  /* U+0027 APOSTROPHE */
-//    #define XK_quoteright                    0x0027  /* deprecated */
-//    #define XK_parenleft                     0x0028  /* U+0028 LEFT PARENTHESIS */
-//    #define XK_parenright                    0x0029  /* U+0029 RIGHT PARENTHESIS */
-//    #define XK_asterisk                      0x002a  /* U+002A ASTERISK */
-//    #define XK_plus                          0x002b  /* U+002B PLUS SIGN */
-//    #define XK_comma                         0x002c  /* U+002C COMMA */
-//    #define XK_minus                         0x002d  /* U+002D HYPHEN-MINUS */
+        // 17
+        XK_Control_L, XK_Control_R,
+        XK_Alt_L, XK_Alt_R,
+
+        // 21, dummy
+        XK_1, XK_2, XK_3, XK_4,
+        XK_5, XK_6,
+
+        // 27
+        XK_Escape,
+
+        // 28, dummy
+        XK_1, XK_2, XK_3, XK_4,
+
+        // 32
+        XK_space,
+        XK_exclam,
+        XK_quotedbl,
+        XK_numbersign,
+        XK_dollar,
+        XK_percent,
+        XK_ampersand,
+        XK_apostrophe,
+        XK_parenleft,
+        XK_parenright,
+        XK_asterisk,
+        XK_plus,
+        XK_comma,
+        XK_minus,
         XK_period,
-        XK_backslash,
+        XK_slash,
 
         // 48
         XK_0, XK_1, XK_2, XK_3, XK_4,
@@ -56,46 +81,31 @@ void inputInit(){
         XK_minus,  // underscore
         XK_grave,
 
-        // 97
-        XK_a, XK_b, XK_c, XK_d, XK_e,
-        XK_f, XK_g, XK_h, XK_i, XK_j,
-        XK_k, XK_l, XK_m, XK_n, XK_o,
-        XK_p, XK_q, XK_r, XK_s, XK_t,
-        XK_u, XK_v, XK_w, XK_x, XK_y, XK_z,
+        // 97, XK_a
+        XK_F1, XK_F2, XK_F3, XK_F4, XK_F5, XK_F6,
+        XK_F7, XK_F8, XK_F9, XK_F10, XK_F11, XK_F12,
 
         //
         XK_equal,
         XK_semicolon, XK_apostrophe,
         XK_comma, XK_period, XK_slash,
-        XK_space,
 
         //
-        XK_Tab, XK_Return,
 
-        //
-        XK_BackSpace, XK_Escape, XK_Delete,
 
-        //
-        XK_Home, XK_Left, XK_Up, XK_Right, XK_Down, XK_Page_Up, XK_Page_Down, XK_End,
 
-        XK_F1, XK_F2, XK_F3, XK_F4, XK_F5, XK_F6,
-        XK_F7, XK_F8, XK_F9, XK_F10, XK_F11, XK_F12,
+
 
     };
-    for (uint8_t i=0; i<UCHAR_MAX; i++) {
-        if(i>=1 && i<=12){
-
-        }
-        if(i>='0' && i<='9'){
-            keyIns.key[i] = XKeysymToKeycode(displayIns, ks[i]);
-        }
-        if(i>='A' && i<='Z'){
-            keyIns.key[i] = XKeysymToKeycode(displayIns, ks[i]);
-        }
-        if(i>='a' && i<='z'){
-            keyIns.key[i] = XKeysymToKeycode(displayIns, ks[i]);
-        }
+    for (uint8_t i=0; i<ARR_LEN(ks); i++) {
+        keyIns.key[i] = XKeysymToKeycode(displayIns, ks[i]);
     }
+
+
+//    printf("compare keycode %d %d %d",
+//           XKeysymToKeycode(displayIns, XK_Return),
+//           XKeysymToKeycode(displayIns, XK_ISO_Enter),
+//           XKeysymToKeycode(displayIns, XK_KP_Enter));
 }
 void inputNull(void){
     inputNormalNull();

@@ -49,6 +49,7 @@ void inputNormalProcess(XEvent *ev){
         else keyI = i;
         if(c != keyIns.key[keyI] ) continue;
         inp->inp[i](ev, keyI);
+        break;
     }
 
 //    if(c == keyIns.key['0'] && inp->inp0){
