@@ -22,39 +22,32 @@ void inputShiftNull(void){
 }
 void inputShiftTyping(){
     InpShift *inp = &inpShiftIns;
-    for (int i='!'; i<MAX_KEY; i++) {
+    for (uint8_t i='!'; i<='+'; i++) {
         inp->inp[i] = inputChar;
     }
-//    inp->inp0 = inputChar;
-//    inp->inp1 = inputChar;
-//    inp->inp2 = inputChar;
-//    inp->inp3 = inputChar;
-//    inp->inp4 = inputChar;
-//    inp->inp5 = inputChar;
-//    inp->inp6 = inputChar;
-//    inp->inp7 = inputChar;
-//    inp->inp8 = inputChar;
-//    inp->inp9 = inputChar;
-
-//    inp->inpA = inputChar;
+    for (uint8_t i='0'; i<='9'; i++) {
+        inp->inp[i] = inputChar;
+    }
+    for (uint8_t i='A'; i<='Z'; i++) {
+        inp->inp[i] = inputChar;
+    }
 }
 void inputShiftProcess(XEvent *ev){
     InpShift *inp = &inpShiftIns;
     unsigned int c = ev->xkey.keycode;
 
-//    if(c == keyIns.key['0'] && inp->inp0){
-//        inp->inp0(')');
-//    }else if(c == keyIns.key['1'] && inp->inp1){
-//        inp->inp1('!');
-//    }else if(c == keyIns.key['2'] && inp->inp2){
-//        inp->inp2('@');
-//    }else if(c == keyIns.key['3'] && inp->inp3){
-//        inp->inp3('#');
-//    }else if(c == keyIns.key['4'] && inp->inp4){
-//        inp->inp4('$');
-//    }
 
-//    else if(c == keyIns.key['A'] && inp->inpA){
-//        inp->inpA('A');
-//    }
+    uint8_t keyI;
+    for (int i=0; i<MAX_KEY; i++) {
+        if( ! inp->inp[i] ) continue;
+        if(c != keyIns.key[i] ) continue;
+
+        if('0'<=i && i<='9') keyI = charNumSh[i-'0'];
+        else if('!'<=i && i<='+') keyI = charSymbolSh[i-'!'];
+        else if('A'<=i && i<='Z') keyI = i;
+        else keyI = 0;
+
+        inp->inp[i](ev, keyI);
+        break;
+    }
 }

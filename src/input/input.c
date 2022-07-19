@@ -1,5 +1,8 @@
 #include "main.h"
 
+const char charNumSh[] = ")!@#$%^&*(";
+const char charSymbol[]   = "`-=[]\\;',./";
+const char charSymbolSh[] = "~_+{}|:\"<>?";
 Key keyIns;
 
 void inputInit(){
@@ -9,7 +12,7 @@ void inputInit(){
 
         // 2
         XK_Home, XK_End,
-        XK_Left, XK_Up, XK_Right, XK_Down,
+        XK_Up, XK_Right, XK_Down, XK_Left,
 
         // 8
         XK_BackSpace,
@@ -24,49 +27,46 @@ void inputInit(){
         XK_Shift_L,
         XK_Shift_R,
 
-        // 16, dummy
-        XK_5,
+        // 16
+        XK_Pause,
 
         // 17
         XK_Control_L, XK_Control_R,
         XK_Alt_L, XK_Alt_R,
 
-        // 21, dummy
-        XK_1, XK_2, XK_3, XK_4,
-        XK_5, XK_6,
+        // 21
+        XK_Caps_Lock, XK_Num_Lock,
+        XK_Insert, XK_KP_Insert,
+
+        // 25
+        XK_Super_L,  // win button
+        XK_Menu,  // context menu button (right-click effect)
 
         // 27
         XK_Escape,
 
-        // 28, dummy
-        XK_1, XK_2, XK_3, XK_4,
+        // 28
+        XK_KP_Up, XK_KP_Right, XK_KP_Down, XK_KP_Left,
 
         // 32
         XK_space,
-        XK_exclam,
-        XK_quotedbl,
-        XK_numbersign,
-        XK_dollar,
-        XK_percent,
-        XK_ampersand,
-        XK_apostrophe,
-        XK_parenleft,
-        XK_parenright,
-        XK_asterisk,
-        XK_plus,
-        XK_comma,
-        XK_minus,
-        XK_period,
-        XK_slash,
+
+        // 33
+        XK_grave, XK_minus, XK_equal,
+        XK_bracketleft, XK_bracketright, XK_backslash,
+        XK_semicolon, XK_apostrophe,
+        XK_comma, XK_period, XK_slash,
+
+        // 44
+        XK_F1, XK_F2, XK_F3, XK_F4,
 
         // 48
         XK_0, XK_1, XK_2, XK_3, XK_4,
         XK_5, XK_6, XK_7, XK_8, XK_9,
 
         // 58
-        XK_semicolon,  // XK_colon
-        XK_semicolon,
-        XK_less, XK_equal, XK_greater, XK_question, XK_at,
+        XK_F5, XK_F6, XK_F7,
+        XK_F8, XK_F9, XK_F10, XK_F11,
 
         // 65
         XK_A, XK_B, XK_C, XK_D, XK_E,
@@ -76,36 +76,30 @@ void inputInit(){
         XK_U, XK_V, XK_W, XK_X, XK_Y, XK_Z,
 
         // 91
-        XK_bracketleft, XK_backslash, XK_bracketright,
-        XK_6,  // caret
-        XK_minus,  // underscore
-        XK_grave,
-
-        // 97, XK_a
-        XK_F1, XK_F2, XK_F3, XK_F4, XK_F5, XK_F6,
-        XK_F7, XK_F8, XK_F9, XK_F10, XK_F11, XK_F12,
-
-        //
-        XK_equal,
-        XK_semicolon, XK_apostrophe,
-        XK_comma, XK_period, XK_slash,
-
-        //
-
-
-
-
+        XK_F12,
+        XK_Scroll_Lock,
 
     };
+//    printf("ks len %d\n", ARR_LEN(ks));  // @test
     for (uint8_t i=0; i<ARR_LEN(ks); i++) {
+
+        // @test
+//        if(ks[i] == XK_0) printf("keysym to keyCode 0 %d\n", i);
+//        if(ks[i] == XK_A) printf("keysym to keyCode A %d\n", i);
+
         keyIns.key[i] = XKeysymToKeycode(displayIns, ks[i]);
     }
 
+#if MAX_KEY != 93
+#error MAX_KEY = ARR_LEN(ks)
+#endif
 
-//    printf("compare keycode %d %d %d",
-//           XKeysymToKeycode(displayIns, XK_Return),
-//           XKeysymToKeycode(displayIns, XK_ISO_Enter),
-//           XKeysymToKeycode(displayIns, XK_KP_Enter));
+
+    // @test
+    //    printf("compare keycode %d %d %d\n",
+    //           XKeysymToKeycode(displayIns, XK_Pause),
+    //           XKeysymToKeycode(displayIns, XK_Break),
+    //           XKeysymToKeycode(displayIns, XK_Menu));
 }
 void inputNull(void){
     inputNormalNull();

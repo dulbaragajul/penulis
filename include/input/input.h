@@ -14,12 +14,15 @@
  * Esc Tab Space Enter  76
  * CapsLock NumLock  78
 */
-#define MAX_KEY 'a'
+#define MAX_KEY 93
 
 typedef struct {
-    unsigned int key[UCHAR_MAX];
+    unsigned int key[MAX_KEY];
 } Key;
 
+extern const char charNumSh[];
+extern const char charSymbol[];
+extern const char charSymbolSh[];
 extern Key keyIns;
 
 void inputInit(void);
